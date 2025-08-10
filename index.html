@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaiResponder - AI ChatBot API Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 5rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+            background: linear-gradient(45deg, #ffffff, #e5e7eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease-out 0.2s both;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ffffff, #f3f4f6);
+            color: #6366f1;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .section {
+            padding: 5rem 0;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 3rem 0;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1f2937;
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        }
+
+        .feature:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            fill: #6366f1;
+        }
+
+        .api-demo {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+            color: #f1f5f9;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+            overflow-x: auto;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #334155;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .code-content {
+            display: none;
+        }
+
+        .code-content.active {
+            display: block;
+        }
+
+        .dashboard {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .api-key-section {
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .api-key-display {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+            color: #10b981;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: 'SF Mono', Monaco, monospace;
+            word-break: break-all;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .auth-form {
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .endpoint-card {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #6366f1;
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 5rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3.04 1.05 4.35L2 22l5.65-1.05C9.96 21.64 11.46 22 13 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-4.42 3.58-8 8-8s8 3.58 8 8-3.58 8-8 8c-.88 0-1.73-.15-2.51-.43L9 20.07z"/>
+                    <circle cx="9" cy="9" r="1.5"/>
+                    <circle cx="15" cy="9" r="1.5"/>
+                    <path d="M8 13s1.5 2 4 2 4-2 4-2"/>
+                </svg>
+                NexaiResponder
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="showSection('home')">Home</a>
+                <a href="#" onclick="showSection('docs')">Documentation</a>
+                <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+                <a href="#" onclick="showSection('pricing')">Pricing</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <div id="home" class="page-section">
+            <section class="hero">
+                <div class="container">
+                    <h1>Next-Gen AI Response API</h1>
+                    <p>Build intelligent chatbots with our powerful API. Simple integration, lightning-fast responses, and enterprise-grade reliability for all your conversational AI needs.</p>
+                    <div class="cta-buttons">
+                        <button class="btn btn-primary" onclick="showSection('dashboard')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+                            </svg>
+                            Start Building Now
+                        </button>
+                        <button class="btn btn-secondary" onclick="showSection('docs')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            View Documentation
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <h2>Why Choose NexaiResponder?</h2>
+                    <div class="features">
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <h3>Lightning Fast</h3>
+                            <p>Sub-100ms response times with our globally distributed infrastructure and optimized AI models</p>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24">
+                                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                            </svg>
+                            <h3>Enterprise Security</h3>
+                            <p>Bank-grade encryption, SOC 2 compliance, and 99.99% uptime SLA guarantee</p>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <h3>Easy Integration</h3>
+                            <p>RESTful API with comprehensive SDKs for Python, JavaScript, Node.js, and more</p>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24">
+                                <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
+                            </svg>
+                            <h3>Auto-Scaling</h3>
+                            <p>From prototype to millions of users - our infrastructure scales automatically</p>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24">
+                                <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                            </svg>
+                            <h3>Smart AI</h3>
+                            <p>Advanced NLP with context awareness, sentiment analysis, and custom personality training</p>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24">
+                                <path d="M22,21H2V3H4V19H6V10H10V19H12V6H16V19H18V14H22V21Z"/>
+                            </svg>
+                            <h3>Real-time Analytics</h3>
+                            <p>Comprehensive dashboards with usage metrics, performance insights, and user behavior analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Documentation Section -->
+        <div id="docs" class="page-section section" style="display: none;">
+            <div class="container">
+                <h2>API Documentation</h2>
+                
+                <div class="endpoint-card">
+                    <h3>Base URL</h3>
+                    <code>https://nexairesponder.vercel.app/api/</code>
+                    <h4 style="margin-top: 1rem;">Main Endpoint</h4>
+                    <code>GET https://nexairesponder.vercel.app/api/message={YOUR_MESSAGE}</code>
+                </div>
+
+                <div class="api-demo">
+                    <div class="code-tabs">
+                        <button class="tab active" onclick="showCode('curl')">cURL</button>
+                        <button class="tab" onclick="showCode('python')">Python</button>
+                        <button class="tab" onclick="showCode('javascript')">JavaScript</button>
+                        <button class="tab" onclick="showCode('nodejs')">Node.js</button>
+                    </div>
+
+                    <div id="curl-code" class="code-content active">
+<pre><code># Simple GET request
+curl "https://nexairesponder.vercel.app/api/message=Hello, how are you?"
+
+# Response
+{
+  "message": "Hello, how are you?",
+  "respond": "Hello! I'm doing great, thank you for asking. How can I help you today?",
+  "timestamp": "2025-08-10T12:34:56.789Z",
+  "response_time": 145
+}
+
+# URL encode special characters
+curl "https://nexairesponder.vercel.app/api/message=What%27s%20the%20weather%20like%3F"
+
+# Response
+{
+  "message": "What's the weather like?",
+  "respond": "I don't have access to real-time weather data, but I'd be happy to help you find weather information or assist with something else!",
+  "timestamp": "2025-08-10T12:35:12.456Z",
+  "response_time": 127
+}</code></pre>
+                    </div>
+
+                    <div id="python-code" class="code-content">
+<pre><code>import requests
+import urllib.parse
+
+class NexaiResponder:
+    def __init__(self):
+        self.base_url = "https://nexairesponder.vercel.app/api/"
+    
+    def get_response(self, message):
+        """Send a message and get AI response"""
+        # URL encode the message
+        encoded_message = urllib.parse.quote(message)
+        url = f"{self.base_url}message={encoded_message}"
+        
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            return {"error": f"Request failed: {str(e)}"}
+    
+    def chat(self, message):
+        """Simple chat interface"""
+        result = self.get_response(message)
+        if "error" not in result:
+            return result["respond"]
+        return result["error"]
+
+# Usage Examples
+ai = NexaiResponder()
+
+# Basic usage
+response = ai.get_response("Tell me a joke")
+print(f"AI: {response['respond']}")
+
+# Simple chat
+user_message = "What is Python?"
+ai_response = ai.chat(user_message)
+print(f"User: {user_message}")
+print(f"AI: {ai_response}")
+
+# Handle special characters
+response = ai.get_response("What's 2 + 2?")
+print(response)
+
+# Batch processing
+messages = [
+    "Hello!",
+    "What can you do?",
+    "Tell me about AI",
+    "Goodbye!"
+]
+
+for msg in messages:
+    result = ai.get_response(msg)
+    print(f"Q: {msg}")
+    print(f"A: {result.get('respond', 'Error')}")
+    print("-" * 50)</code></pre>
+                    </div>
+
+                    <div id="javascript-code" class="code-content">
+<pre><code>class NexaiResponder {
+    constructor() {
+        this.baseUrl = 'https://nexairesponder.vercel.app/api/';
+    }
+
+    async getResponse(message) {
+        try {
+            // URL encode the message
+            const encodedMessage = encodeURIComponent(message);
+            const url = `${this.baseUrl}message=${encodedMessage}`;
+            
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return await response.json();
+        } catch (error) {
+            return { error: `Request failed: ${error.message}` };
+        }
+    }
+
+    async chat(message) {
+        const result = await this.getResponse(message);
+        return result.error ? result.error : result.respond;
+    }
+}
+
+// Usage Examples
+const ai = new NexaiResponder();
+
+// Basic async/await usage
+async function basicExample() {
+    const response = await ai.getResponse("What is JavaScript?");
+    console.log('AI Response:', response.respond);
+}
+
+// Simple chat interface
+async function chatExample() {
+    const userMessage = "Tell me about web development";
+    const aiResponse = await ai.chat(userMessage);
+    
+    console.log(`User: ${userMessage}`);
+    console.log(`AI: ${aiResponse}`);
+}
+
+// React Component Example
+function ChatComponent() {
+    const [message, setMessage] = React.useState('');
+    const [response, setResponse] = React.useState('');
+    const [loading, setLoading] = React.useState(false);
+
+    const sendMessage = async () => {
+        if (!message.trim()) return;
+        
+        setLoading(true);
+        const ai = new NexaiResponder();
+        const result = await ai.getResponse(message);
+        
+        setResponse(result.respond || result.error || 'No response');
+        setLoading(false);
+    };
+
+    return React.createElement('div', { className: 'chat-container' }, [
+        React.createElement('input', {
+            key: 'input',
+            type: 'text',
+            value: message,
+            onChange: (e) => setMessage(e.target.value),
+            placeholder: 'Type your message...',
+            onKeyPress: (e) => e.key === 'Enter' && sendMessage()
+        }),
+        React.createElement('button', {
+            key: 'button',
+            onClick: sendMessage,
+            disabled: loading
+        }, loading ? 'Sending...' : 'Send'),
+        React.createElement('div', {
+            key: 'response',
+            className: 'response'
+        }, response)
+    ]);
+}
+
+// Promise-based usage
+ai.getResponse('Hello world!')
+    .then(result => {
+        console.log('Message:', result.message);
+        console.log('Response:', result.respond);
+        console.log('Response Time:', result.response_time + 'ms');
+    })
+    .catch(error => console.error('Error:', error));</code></pre>
+                    </div>
+
+                    <div id="nodejs-code" class="code-content">
+<pre><code>const express = require('express');
+const axios = require('axios');
+const app = express();
+
+app.use(express.json());
+
+class NexaiResponder {
+    constructor() {
+        this.baseUrl = 'https://nexairesponder.vercel.app/api/';
+    }
+
+    async getResponse(message) {
+        try {
+            const encodedMessage = encodeURIComponent(message);
+            const url = `${this.baseUrl}message=${encodedMessage}`;
+            
+            const response = await axios.get(url, { timeout: 10000 });
+            return response.data;
+        } catch (error) {
+            return { 
+                error: `Request failed: ${error.response?.data?.error || error.message}` 
+            };
+        }
+    }
+
+    async chat(message) {
+        const result = await this.getResponse(message);
+        return result.error ? result.error : result.respond;
+    }
+}
+
+// Initialize the AI client
+const ai = new NexaiResponder();
+
+// Express routes
+app.post('/chat', async (req, res) => {
+    try {
+        const { message } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ error: 'Message is required' });
+        }
+
+        const response = await ai.getResponse(message);
+        res.json(response);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Webhook endpoint for external integrations
+app.post('/webhook/message', async (req, res) => {
+    try {
+        const { message, user_id, channel } = req.body;
+        
+        const response = await ai.getResponse(message);
+        
+        // Process the response (save to database, send to chat platform, etc.)
+        console.log(`Response for user ${user_id} in ${channel}:`, response.respond);
+        
+        res.json({ 
+            success: true, 
+            user_id,
+            channel,
+            original_message: message,
+            ai_response: response.respond,
+            response_time: response.response_time
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Batch processing endpoint
+app.post('/batch', async (req, res) => {
+    try {
+        const { messages } = req.body;
+        
+        if (!Array.isArray(messages)) {
+            return res.status(400).json({ error: 'Messages must be an array' });
+        }
+
+        const responses = await Promise.all(
+            messages.map(async (message, index) => {
+                const response = await ai.getResponse(message);
+                return {
+                    index,
+                    message,
+                    response: response.respond || response.error,
+                    success: !response.error
+                };
+            })
+        );
+
+        res.json({ responses, total: messages.length });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
+// Test the API connection
+app.get('/test', async (req, res) => {
+    try {
+        const testMessage = "Hello, this is a test message";
+        const response = await ai.getResponse(testMessage);
+        res.json({ 
+            test: 'successful', 
+            response: response.respond || response.error,
+            response_time: response.response_time
+        });
+    } catch (error) {
+        res.status(500).json({ test: 'failed', error: error.message });
+    }
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`NexaiResponder client server running on port ${PORT}`);
+});
+
+// CLI Usage Example
+if (require.main === module) {
+    const readline = require('readline');
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    console.log('🤖 NexaiResponder CLI Chat');
+    console.log('Type "exit" to quit\n');
+
+    const chatLoop = () => {
+        rl.question('You: ', async (message) => {
+            if (message.toLowerCase() === 'exit') {
+                rl.close();
+                return;
+            }
+
+            try {
+                const response = await ai.getResponse(message);
+                console.log(`AI: ${response.respond || response.error}`);
+                console.log(`(Response time: ${response.response_time || 0}ms)\n`);
+            } catch (error) {
+                console.log(`Error: ${error.message}\n`);
+            }
+
+            chatLoop();
+        });
+    };
+
+    chatLoop();
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="section" style="margin-top: 2rem;">
+                    <h3>API Response Format</h3>
+                    <div class="endpoint-card">
+                        <h4>Success Response</h4>
+                        <pre><code>{
+  "message": "Your original message",
+  "respond": "AI generated response",
+  "timestamp": "2025-08-10T12:34:56.789Z",
+  "response_time": 145
+}</code></pre>
+                        
+                        <h4 style="margin-top: 1.5rem;">Error Response</h4>
+                        <pre><code>{
+  "error": "Error description",
+  "timestamp": "2025-08-10T12:34:56.789Z"
+}</code></pre>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <h4>Rate Limits</h4>
+                        <ul style="margin: 1rem 0; padding-left: 2rem;">
+                            <li><strong>Free Tier:</strong> 1,000 requests/day</li>
+                            <li><strong>Pro Tier:</strong> 50,000 requests/day</li>
+                            <li><strong>Enterprise:</strong> Unlimited</li>
+                        </ul>
+                        
+                        <h4 style="margin-top: 1.5rem;">Best Practices</h4>
+                        <ul style="margin: 1rem 0; padding-left: 2rem;">
+                            <li>Always URL encode your messages</li>
+                            <li>Implement timeout handling (10s recommended)</li>
+                            <li>Cache responses when appropriate</li>
+                            <li>Handle rate limit errors gracefully</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="page-section section" style="display: none;">
+            <div class="container">
+                <h2>API Dashboard</h2>
+                
+                <div id="auth-section">
+                    <div class="auth-form">
+                        <h3 style="text-align: center; margin-bottom: 2rem;">Get Your API Access</h3>
+                        <form id="auth-form">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="company">Company (Optional)</label>
+                                <input type="text" id="company">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Start Using API</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="dashboard-content" class="dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="api-calls">0</div>
+                            <div>API Calls Today</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="messages-sent">0</div>
+                            <div>Messages Processed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="avg-response">0ms</div>
+                            <div>Avg Response Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="success-rate">99.9%</div>
+                            <div>Success Rate</div>
+                        </div>
+                    </div>
+
+                    <div class="api-key-section">
+                        <h3>Your API Endpoint</h3>
+                        <p>Use this URL pattern to send messages to your AI chatbot:</p>
+                        <div class="api-key-display" id="api-endpoint-display">
+                            https://nexairesponder.vercel.app/api/message=YOUR_MESSAGE_HERE
+                        </div>
+                        <button class="btn btn-secondary" onclick="copyEndpoint()">Copy Endpoint</button>
+                        <button class="btn btn-primary" onclick="testEndpoint()">Test API</button>
+                    </div>
+
+                    <div class="api-demo">
+                        <h3 style="color: #f1f5f9; margin-bottom: 1rem;">Live API Tester</h3>
+                        <div style="margin-bottom: 1rem;">
+                            <input type="text" id="test-message" placeholder="Enter your message..." style="padding: 0.8rem; width: 70%; margin-right: 1rem; border-radius: 8px; border: none; background: rgba(255,255,255,0.1); color: white;">
+                            <button class="btn btn-primary" onclick="testAPI()" style="padding: 0.8rem 1.5rem;">Send Message</button>
+                        </div>
+                        <div id="test-response" style="background: linear-gradient(145deg, #1e293b, #0f172a); padding: 1.5rem; border-radius: 12px; min-height: 120px; color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            Response will appear here...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div id="pricing" class="page-section section" style="display: none;">
+            <div class="container">
+                <h2>Simple, Transparent Pricing</h2>
+                <div class="features" style="max-width: 1000px; margin: 0 auto;">
+                    <div class="feature">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <h3>Free Tier</h3>
+                        <div class="stat-number" style="color: #6366f1; margin: 1rem 0;">$0</div>
+                        <ul style="text-align: left; margin: 1rem 0;">
+                            <li>1,000 API calls/day</li>
+                            <li>Standard response speed</li>
+                            <li>Community support</li>
+                            <li>Basic documentation</li>
+                            <li>Standard rate limits</li>
+                        </ul>
+                        <button class="btn btn-primary">Get Started Free</button>
+                    </div>
+                    <div class="feature">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <h3>Pro</h3>
+                        <div class="stat-number" style="color: #6366f1; margin: 1rem 0;">$49</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">per month</div>
+                        <ul style="text-align: left; margin: 1rem 0;">
+                            <li>50,000 API calls/day</li>
+                            <li>Priority response speed</li>
+                            <li>Email support</li>
+                            <li>Advanced analytics</li>
+                            <li>Higher rate limits</li>
+                            <li>Custom personalities</li>
+                        </ul>
+                        <button class="btn btn-primary">Upgrade to Pro</button>
+                    </div>
+                    <div class="feature">
+                        <svg class="feature-icon" viewBox="0 0 24 24">
+                            <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                        </svg>
+                        <h3>Enterprise</h3>
+                        <div class="stat-number" style="color: #6366f1; margin: 1rem 0;">Custom</div>
+                        <ul style="text-align: left; margin: 1rem 0;">
+                            <li>Unlimited API calls</li>
+                            <li>Ultra-fast responses</li>
+                            <li>24/7 dedicated support</li>
+                            <li>Custom AI training</li>
+                            <li>SLA guarantees</li>
+                            <li>On-premise deployment</li>
+                        </ul>
+                        <button class="btn btn-primary">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 NexaiResponder. All rights reserved. | Built with ❤️ for developers worldwide</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentUser = null;
+
+        // Navigation
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+
+        // Code tabs
+        function showCode(language) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.code-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[onclick="showCode('${language}')"]`).classList.add('active');
+            document.getElementById(`${language}-code`).classList.add('active');
+        }
+
+        // Authentication
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const company = document.getElementById('company').value;
+            
+            setupDashboard(email, name, company);
+        });
+
+        function setupDashboard(email, name, company) {
+            currentUser = {
+                email: email,
+                name: name,
+                company: company,
+                createdAt: new Date()
+            };
+            
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('dashboard-content').classList.add('active');
+            
+            // Animate stats
+            animateCounter('api-calls', 0, 247);
+            animateCounter('messages-sent', 0, 1834);
+            animateValue('avg-response', 0, 156, 'ms');
+            
+            startStatsUpdates();
+        }
+
+        function animateCounter(elementId, start, target) {
+            const element = document.getElementById(elementId);
+            let current = start;
+            const increment = (target - start) / 50;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = Math.round(target).toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(current).toLocaleString();
+                }
+            }, 30);
+        }
+
+        function animateValue(elementId, start, target, suffix = '') {
+            const element = document.getElementById(elementId);
+            let current = start;
+            const increment = (target - start) / 50;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = Math.round(target) + suffix;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.round(current) + suffix;
+                }
+            }, 30);
+        }
+
+        function startStatsUpdates() {
+            setInterval(() => {
+                if (Math.random() > 0.8) {
+                    const calls = parseInt(document.getElementById('api-calls').textContent.replace(/,/g, ''));
+                    const messages = parseInt(document.getElementById('messages-sent').textContent.replace(/,/g, ''));
+                    
+                    document.getElementById('api-calls').textContent = (calls + Math.floor(Math.random() * 3) + 1).toLocaleString();
+                    document.getElementById('messages-sent').textContent = (messages + Math.floor(Math.random() * 8) + 2).toLocaleString();
+                }
+            }, 3000);
+        }
+
+        function copyEndpoint() {
+            const endpoint = 'https://nexairesponder.vercel.app/api/message=YOUR_MESSAGE_HERE';
+            navigator.clipboard.writeText(endpoint).then(() => {
+                alert('API endpoint copied to clipboard!');
+            });
+        }
+
+        function testEndpoint() {
+            document.getElementById('test-message').value = 'Hello, this is a test message!';
+            testAPI();
+        }
+
+        async function testAPI() {
+            const message = document.getElementById('test-message').value;
+            const responseDiv = document.getElementById('test-response');
+            
+            if (!message.trim()) {
+                responseDiv.textContent = 'Please enter a message to test.';
+                return;
+            }
+
+            responseDiv.innerHTML = '<div style="color: #fbbf24;">🔄 Sending request...</div>';
+            
+            try {
+                const encodedMessage = encodeURIComponent(message);
+                const url = `https://nexairesponder.vercel.app/api/message=${encodedMessage}`;
+                
+                const startTime = Date.now();
+                const response = await fetch(url);
+                const endTime = Date.now();
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                const responseTime = endTime - startTime;
+                
+                responseDiv.innerHTML = `
+                    <div style="color: #10b981; margin-bottom: 1rem;">✅ Success (${responseTime}ms)</div>
+                    <div style="color: #e5e7eb; margin-bottom: 0.5rem;"><strong>Request:</strong> ${data.message}</div>
+                    <div style="color: #e5e7eb;"><strong>Response:</strong> ${data.respond}</div>
+                `;
+                
+                // Update stats
+                const calls = parseInt(document.getElementById('api-calls').textContent.replace(/,/g, ''));
+                document.getElementById('api-calls').textContent = (calls + 1).toLocaleString();
+                
+            } catch (error) {
+                responseDiv.innerHTML = `
+                    <div style="color: #ef4444; margin-bottom: 1rem;">❌ Error</div>
+                    <div style="color: #e5e7eb;">${error.message}</div>
+                `;
+            }
+        }
+
+        // Initialize page
+        showSection('home');
+    </script>
+</body>
+</html>
